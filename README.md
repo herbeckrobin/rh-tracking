@@ -1,25 +1,25 @@
 # RH Tracking
 
-Cookieless Analytics (Umami) und client-seitiges Error-Tracking (GlitchTip). Teil der rh-blueprint Kollektion.
+Cookieless Analytics für WordPress: Umami, Plausible, Matomo und GoatCounter. Teil der rh-blueprint Kollektion.
 
-Zwei datensparsame Frontend-Werkzeuge, jeweils nur aktiv, wenn konfiguriert. Im Admin wird nichts geladen.
+Jeder Anbieter ist eine eigene Reihe mit Logo, Status und An/Aus-Schalter. Aktiv nur, wenn aktiviert und konfiguriert. Im Admin wird nichts geladen. Error-Tracking (GlitchTip) liegt nicht hier, sondern im Modul `rh-monitor`.
 
-## Was es macht
+## Anbieter
 
-- **Umami Analytics**: cookieless, kein Consent-Banner nötig. Nur Skript-URL und Website-ID setzen.
-- **GlitchTip im Browser**: meldet JavaScript-Fehler der Besucher. Das Sentry-Browser-SDK wird **lokal** ausgeliefert (kein CDN), also kein Drittanbieter-Request und kein IP-Leak.
-- **Sinnvolle Defaults**: Environment fällt auf den WordPress-Umgebungstyp zurück, Release auf die Domain.
+- **Umami**: cookieless. Skript-URL und Website-ID.
+- **Plausible**: cookieless. Domain und Skript-URL (self-hosted oder plausible.io).
+- **Matomo**: self-hosted, im cookieless-Modus (`disableCookies`). Instanz-URL und Site-ID.
+- **GoatCounter**: minimal, cookieless. Endpoint und Skript-URL.
+
+Alle sind cookieless, kein Consent-Banner nötig. Ein neuer Anbieter ist eine eigene Provider-Klasse plus ein Eintrag in der Registry, der Rest (Reihe, Modal, Speicherung, Frontend) folgt automatisch.
 
 ## Einstellungen
 
-Im Backend unter **RH Blueprint → Tracking**:
-
-- **Umami**: aktivieren, Skript-URL (z.B. `https://analytics.deine-domain.de/script.js`), Website-ID.
-- **GlitchTip (Browser)**: aktivieren, DSN, Environment, Release.
+Im Backend unter **RH Blueprint → Tracking**: Anbieter über den Schalter aktivieren, über das Zahnrad konfigurieren. Die Status-Pill zeigt aktiv, unvollständig oder inaktiv.
 
 ## DSGVO
 
-Umami ist cookieless (keine Einwilligung nötig), GlitchTip läuft self-hosted ohne Cookies, das SDK lokal gehostet. In diesem Standard-Setup ist kein Consent-Banner erforderlich. Wird ein einwilligungspflichtiger Dienst ergänzt, das Modul `rh-consent` nutzen.
+Alle Anbieter sind cookieless und ohne Einwilligung nutzbar, sofern self-hosted bzw. EU-konform betrieben. Skript-URLs idealerweise selbst hosten (kein Drittanbieter-Request, kein IP-Leak). Wird ein einwilligungspflichtiger Dienst ergänzt, das Modul `rh-consent` nutzen.
 
 ## Installation
 

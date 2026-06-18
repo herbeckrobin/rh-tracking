@@ -4,8 +4,8 @@
  * Plugin Name:       RH Tracking
  * Plugin URI:        https://github.com/herbeckrobin/rh-tracking
  * Update URI:        https://github.com/herbeckrobin/rh-tracking
- * Description:       Cookieless Analytics (Umami) und client-seitiges Error-Tracking (GlitchTip, Sentry-Browser-SDK lokal gehostet). DSGVO-freundlich. Teil der rh-blueprint Kollektion.
- * Version:           0.1.2
+ * Description:       Cookieless Analytics für WordPress: Umami, Plausible, Matomo und GoatCounter, jeder als eigene Anbieter-Reihe. DSGVO-freundlich. Teil der rh-blueprint Kollektion.
+ * Version:           0.2.0
  * Requires at least: 6.5
  * Requires PHP:      8.1
  * Author:            Robin Herbeck
@@ -21,7 +21,7 @@ if (! defined('ABSPATH')) {
     exit;
 }
 
-define('RHTRACKING_VERSION', '0.1.2');
+define('RHTRACKING_VERSION', '0.2.0');
 define('RHTRACKING_PLUGIN_FILE', __FILE__);
 define('RHTRACKING_PLUGIN_DIR', plugin_dir_path(__FILE__));
 define('RHTRACKING_PLUGIN_URL', plugin_dir_url(__FILE__));

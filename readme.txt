@@ -1,30 +1,37 @@
 === RH Tracking ===
 Contributors: robinherbeck
-Tags: analytics, umami, glitchtip, sentry, cookieless
+Tags: analytics, umami, plausible, matomo, cookieless
 Requires at least: 6.5
 Tested up to: 7.0
 Requires PHP: 8.1
-Stable tag: 0.1.1
+Stable tag: 0.2.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
-Cookieless analytics (Umami) and client-side error tracking (GlitchTip), both privacy friendly and without an external CDN.
+Cookieless analytics for WordPress: Umami, Plausible, Matomo and GoatCounter, each as its own provider row.
 
 == Description ==
 
-RH Tracking adds two privacy-friendly frontend tools, each active only when configured.
+RH Tracking adds cookieless analytics providers, each as its own row with logo, status and an on/off switch. Configuration lives in a per-provider modal. A provider is active only when enabled and fully configured.
 
-= Features =
+= Providers =
 
-* Umami analytics: cookieless, no consent banner needed. Just set the script URL and website ID
-* GlitchTip browser error tracking: reports visitor JavaScript errors. The Sentry browser SDK is served locally (no CDN), so no third-party request and no IP leak
-* Environment and release fall back to sensible values (WordPress environment type, site domain) when left empty
+* Umami: cookieless. Script URL and website ID
+* Plausible: cookieless. Domain and script URL (self-hosted or plausible.io)
+* Matomo: self-hosted, cookieless mode (disableCookies). Instance URL and site ID
+* GoatCounter: minimal, cookieless. Endpoint and script URL
 
-Nothing loads in the admin, and nothing loads until the respective fields are filled in.
+All providers are cookieless, so no consent banner is required. Nothing loads in the admin, and nothing loads until a provider is enabled and configured. Adding a provider is a new provider class plus one registry entry.
+
+Error tracking (GlitchTip) is not part of this plugin. It lives in the rh-monitor module.
 
 Part of the rh-blueprint collection. Settings live under RH Blueprint > Tracking.
 
 == Changelog ==
+
+= 0.2.0 =
+* Rebuilt as provider rows: Umami, Plausible, Matomo and GoatCounter, each with logo, status and config modal.
+* Browser error tracking (GlitchTip) moved to the rh-monitor module.
 
 = 0.1.0 =
 * Initial release: Umami (cookieless) and locally-hosted GlitchTip browser error tracking.

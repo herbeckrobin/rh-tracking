@@ -6,13 +6,15 @@ namespace RhTracking;
 
 use RhBlueprint\Core\Core;
 use RhBlueprint\Core\Settings\SettingsPage;
-use RhTracking\Admin\TrackingGroup;
+use RhTracking\Admin\TrackingProvidersPage;
+use RhTracking\Providers\ProviderRegistry;
 
 /**
  * Bootstrap von rh-tracking.
  *
- * Hängt am Core-Hook `rh-blueprint/core/booted` (init). Registriert die Settings
- * im Tab "Tracking" und bootet das Frontend-Tracking. Braucht nur den Core.
+ * Hängt am Core-Hook `rh-blueprint/core/booted` (init). Registriert den Tab
+ * "Tracking" (ohne GroupInterface, der Tab rendert eigene Anbieter-Reihen) und
+ * bootet das Frontend-Tracking. Braucht nur den Core.
  */
 final class Plugin
 {
@@ -27,10 +29,12 @@ final class Plugin
 
     public static function onCoreBooted(Core $core): void
     {
-        $core->settings()->registerTab('tracking', __('Tracking', 'rh-tracking'), 55);
-        $core->settings()->registerGroup(new TrackingGroup());
+        $registry = new ProviderRegistry();
 
-        (new Tracking())->boot();
+        $core->settings()->registerTab('tracking', __('Tracking', 'rh-tracking'), 55);
+
+        (new TrackingProvidersPage($registry))->boot();
+        (new Tracking($registry))->boot();
 
         add_filter('rh-blueprint/dashboard/quick_links', static function (array $links): array {
             $links[] = [
