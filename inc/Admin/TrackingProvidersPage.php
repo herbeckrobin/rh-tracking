@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace RhTracking\Admin;
 
+use RhBlueprint\Core\Admin\Ui;
+use RhBlueprint\Core\Admin\Assets;
+use RhBlueprint\Core\Admin\Guard;
 use RhBlueprint\Core\Settings\SettingsPage;
 use RhTracking\Providers\Provider;
 use RhTracking\Providers\ProviderRegistry;
@@ -40,8 +43,7 @@ final class TrackingProvidersPage
 
     public function enqueueAssets(string $hook): void
     {
-        $page = isset($_GET['page']) ? sanitize_key((string) $_GET['page']) : '';
-        if ($page !== SettingsPage::MENU_SLUG) {
+        if (! Assets::onSettings()) {
             return;
         }
 
@@ -142,11 +144,12 @@ final class TrackingProvidersPage
         wp_nonce_field(self::NONCE_TOGGLE);
         echo '<input type="hidden" name="action" value="rhbp_tracking_toggle" />';
         echo '<input type="hidden" name="provider" value="' . esc_attr($provider->id()) . '" />';
-        printf(
-            '<label class="rhbp-switch" title="%s"><input type="checkbox" name="enabled" value="1" %s onchange="this.form.submit()" /><span class="rhbp-switch__track" aria-hidden="true"></span></label>',
-            esc_attr($enabled ? __('Anbieter deaktivieren', 'rh-tracking') : __('Anbieter aktivieren', 'rh-tracking')),
-            checked($enabled, true, false)
-        );
+        echo Ui::switch([
+            'name' => 'enabled',
+            'checked' => $enabled,
+            'title' => $enabled ? __('Anbieter deaktivieren', 'rh-tracking') : __('Anbieter aktivieren', 'rh-tracking'),
+            'input' => ['onchange' => 'this.form.submit()'],
+        ]);
         echo '</form>';
 
         // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- Attribute via esc_attr, Icon ist internes SVG aus festen Konstanten.
@@ -229,10 +232,7 @@ final class TrackingProvidersPage
 
     public function handleToggle(): void
     {
-        if (! current_user_can(self::CAPABILITY)) {
-            wp_die(esc_html__('Keine Berechtigung.', 'rh-tracking'));
-        }
-        check_admin_referer(self::NONCE_TOGGLE);
+        Guard::form(self::NONCE_TOGGLE, self::CAPABILITY);
 
         $providerId = isset($_POST['provider']) ? sanitize_key(wp_unslash($_POST['provider'])) : '';
         $provider = $this->registry->get($providerId);
@@ -248,10 +248,7 @@ final class TrackingProvidersPage
 
     public function handleSave(): void
     {
-        if (! current_user_can(self::CAPABILITY)) {
-            wp_die(esc_html__('Keine Berechtigung.', 'rh-tracking'));
-        }
-        check_admin_referer(self::NONCE_SAVE);
+        Guard::form(self::NONCE_SAVE, self::CAPABILITY);
 
         $providerId = isset($_POST['provider']) ? sanitize_key(wp_unslash($_POST['provider'])) : '';
         $provider = $this->registry->get($providerId);

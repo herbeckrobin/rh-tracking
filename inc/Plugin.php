@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace RhTracking;
 
 use RhBlueprint\Core\Core;
+use RhBlueprint\Core\UpdateChecker;
 use RhBlueprint\Core\Settings\SettingsPage;
 use RhTracking\Admin\TrackingProvidersPage;
 use RhTracking\Providers\ProviderRegistry;
@@ -20,9 +21,9 @@ final class Plugin
 {
     public static function boot(): void
     {
-        if (class_exists(UpdateChecker::class)) {
-            (new UpdateChecker())->boot();
-        }
+        add_action('plugins_loaded', static function (): void {
+            (new UpdateChecker('rh-tracking', RHTRACKING_PLUGIN_FILE))->boot();
+        }, 0);
 
         add_action('rh-blueprint/core/booted', [self::class, 'onCoreBooted']);
     }
