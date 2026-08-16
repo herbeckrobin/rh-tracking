@@ -43,7 +43,7 @@ final class TrackingProvidersPage
 
     public function enqueueAssets(string $hook): void
     {
-        if (! Assets::onSettings()) {
+        if (! Assets::onSettings(self::TAB_ID)) {
             return;
         }
 
